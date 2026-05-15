@@ -101,15 +101,11 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    # Read uploaded bytes
-    bytes_data = uploaded_file.read()
+    uploaded_file.seek(0)
 
-    # Save temporary file
-    with open("temp.jpg", "wb") as f:
-        f.write(bytes_data)
+    image = Image.open(uploaded_file)
 
-    # Open image normally
-    image = Image.open("temp.jpg").convert("RGB")
+    image = image.convert("RGB")
 
     st.image(
         image,
@@ -131,7 +127,6 @@ if uploaded_file is not None:
 
     prediction = classes[pred]
 
-    # Result UI
     if prediction == "real":
 
         st.markdown(
