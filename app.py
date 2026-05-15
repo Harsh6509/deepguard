@@ -159,60 +159,8 @@ if uploaded_file is not None:
         unsafe_allow_html=True
     )
 
-    st.write(uploaded_file.type)
-
-    # Result UI
-    if prediction == "real":
-
-        st.markdown(
-            '''
-            <div class="result-box real">
-            ✅ REAL IMAGE
-            </div>
-            ''',
-            unsafe_allow_html=True
-        )
-
-    else:
-
-        st.markdown(
-            '''
-            <div class="result-box fake">
-            🚨 AI GENERATED IMAGE
-            </div>
-            ''',
-            unsafe_allow_html=True
-        )
-
-    st.markdown(
-        f'<div class="confidence">Confidence: {confidence:.2%}</div>',
-        unsafe_allow_html=True
-    )
-
-    # Result UI
-    if prediction == "real":
-
-        st.markdown(
-            f'''<div class="result-box real">
-            ✅ REAL IMAGE
-            </div>''',
-            unsafe_allow_html=True
-        )
-
-    else:
-
-        st.markdown(
-            f'''<div class="result-box fake">
-            🚨 AI GENERATED IMAGE
-            </div>''',
-            unsafe_allow_html=True
-        )
-
-    st.markdown(
-        f'<div class="confidence">Confidence: {confidence:.2%}</div>',
-        unsafe_allow_html=True
-    )
-
+   
+    
 # Footer
 st.markdown("---")
 st.caption("DeepGuard • AI Deepfake Detection Project")
