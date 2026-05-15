@@ -4,6 +4,7 @@ import torch
 from torchvision import transforms
 from PIL import Image
 from models.hybrid_model import HybridDetector
+import io
 
 # Page config
 st.set_page_config(
@@ -100,11 +101,9 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    image = Image.open(uploaded_file)
+    bytes_data = uploaded_file.getvalue()
 
-    image.load()
-
-    image = image.convert("RGB")
+    image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
 
     st.image(
         image,
