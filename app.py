@@ -100,7 +100,13 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    image = Image.open(uploaded_file).convert("RGB")
+    try:
+        image = Image.open(uploaded_file).convert("RGB")
+
+    except Exception:
+
+        st.error("Invalid or corrupted image file.")
+        st.stop()
 
     st.image(
         image,
