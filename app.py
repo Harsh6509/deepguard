@@ -115,7 +115,7 @@ if uploaded_file is not None:
     st.image(
         image,
         caption="Uploaded Image",
-        use_container_width=True
+        use_column_width=True
     )
 
     # Transform
