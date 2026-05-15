@@ -159,6 +159,8 @@ if uploaded_file is not None:
         unsafe_allow_html=True
     )
 
+    st.write(uploaded_file.type)
+
     # Result UI
     if prediction == "real":
 
