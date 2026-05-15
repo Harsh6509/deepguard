@@ -4,7 +4,7 @@ import torch
 from torchvision import transforms
 from PIL import Image
 from models.hybrid_model import HybridDetector
-
+import tempfile
 
 # Page config
 st.set_page_config(
@@ -93,6 +93,7 @@ transform = transforms.Compose([
 # Classes
 classes = ['ai_generated', 'real']
 
+
 # Upload section
 uploaded_file = st.file_uploader(
     "📤 Upload an image",
@@ -101,11 +102,15 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    uploaded_file.seek(0)
+    # Create temporary file
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp_file:
 
-    image = Image.open(uploaded_file)
+        tmp_file.write(uploaded_file.getbuffer())
 
-    image = image.convert("RGB")
+        temp_path = tmp_file.name
+
+    # Open safely
+    image = Image.open(temp_path).convert("RGB")
 
     st.image(
         image,
