@@ -101,21 +101,15 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    import cv2
-    import numpy as np
+    # Read uploaded bytes
+    bytes_data = uploaded_file.read()
 
-    file_bytes = np.asarray(
-        bytearray(uploaded_file.read()),
-        dtype=np.uint8
-    )
+    # Save temporary file
+    with open("temp.jpg", "wb") as f:
+        f.write(bytes_data)
 
-    image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-
-    if image is None:
-        st.error("Could not read image.")
-        st.stop()
-
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # Open image normally
+    image = Image.open("temp.jpg").convert("RGB")
 
     st.image(
         image,
@@ -123,10 +117,8 @@ if uploaded_file is not None:
         use_container_width=True
     )
 
-    # Convert to PIL for torchvision transforms
-    pil_image = Image.fromarray(image)
-
-    img = transform(pil_image).unsqueeze(0).to(device)
+    # Transform
+    img = transform(image).unsqueeze(0).to(device)
 
     with st.spinner("Analyzing image..."):
 
@@ -138,6 +130,34 @@ if uploaded_file is not None:
         confidence = torch.softmax(output, dim=1)[0][pred].item()
 
     prediction = classes[pred]
+
+    # Result UI
+    if prediction == "real":
+
+        st.markdown(
+            '''
+            <div class="result-box real">
+            ✅ REAL IMAGE
+            </div>
+            ''',
+            unsafe_allow_html=True
+        )
+
+    else:
+
+        st.markdown(
+            '''
+            <div class="result-box fake">
+            🚨 AI GENERATED IMAGE
+            </div>
+            ''',
+            unsafe_allow_html=True
+        )
+
+    st.markdown(
+        f'<div class="confidence">Confidence: {confidence:.2%}</div>',
+        unsafe_allow_html=True
+    )
 
     # Result UI
     if prediction == "real":
